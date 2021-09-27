@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ForeignCurrency</string>
+
+    //Navigation Fragments
+    <string name="supported_countries_label">Supported Countries</string>
+
 </resources>
