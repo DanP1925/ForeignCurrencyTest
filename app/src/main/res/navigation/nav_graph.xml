@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/supportedCountries"
-        android:name="com.example.foreigncurrency.SupportedCountriesFragment"
+        android:name="com.example.foreigncurrency.supportedcountries.SupportedCountriesFragment"
         android:label="@string/supported_countries_label"
         tools:layout="@layout/fragment_supported_countries" />
 
