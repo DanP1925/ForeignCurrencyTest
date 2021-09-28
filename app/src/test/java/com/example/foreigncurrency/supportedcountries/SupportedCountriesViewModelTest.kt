@@ -43,7 +43,7 @@ class SupportedCountriesViewModelTest {
         `when`(fakeRepository.getCountries()).thenReturn(FAKE_COUNTRIES)
 
         //WHEN
-        viewModel.getCountries()
+        viewModel.fetchCountries()
         viewModel.countries.observeForTesting {
             val countries = viewModel.countries.getOrAwaitValue()
 
