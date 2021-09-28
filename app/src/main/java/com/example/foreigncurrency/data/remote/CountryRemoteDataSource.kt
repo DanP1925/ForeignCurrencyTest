@@ -6,6 +6,7 @@ import com.example.foreigncurrency.BuildConfig
 import com.example.foreigncurrency.data.Country
 import com.example.foreigncurrency.data.CountryDataSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -15,6 +16,7 @@ import java.lang.RuntimeException
 import java.nio.charset.Charset
 
 class CountryRemoteDataSource(private val countryService: CountryService) : CountryDataSource {
+    @ExperimentalCoroutinesApi
     override suspend fun getCountries(): Flow<List<Country>> = flow {
         val data: ByteArray = decode(BuildConfig.AK, Base64.DEFAULT)
         var param = ""
