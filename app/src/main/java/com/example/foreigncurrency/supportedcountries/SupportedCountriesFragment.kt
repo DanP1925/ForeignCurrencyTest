@@ -25,8 +25,6 @@ class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countrie
         supportedCountriesViewModel.countries.observe(viewLifecycleOwner, { countries ->
             setupCountriesList(countries)
         })
-
-        supportedCountriesViewModel.fetchCountries()
     }
 
     private fun setupCountriesList(countries: List<Country>) {
