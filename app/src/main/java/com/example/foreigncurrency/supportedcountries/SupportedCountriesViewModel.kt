@@ -12,7 +12,7 @@ class SupportedCountriesViewModel(private val countryRepository: CountryReposito
     val countries: LiveData<List<Country>> = _countries
 
     fun getCountries() {
-
+        _countries.value = countryRepository.getCountries()
     }
 
 }

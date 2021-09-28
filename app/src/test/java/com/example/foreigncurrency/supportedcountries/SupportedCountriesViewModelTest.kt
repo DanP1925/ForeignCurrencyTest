@@ -27,7 +27,8 @@ class SupportedCountriesViewModelTest {
 
     private val COUNTRIES_SIZE = 2
     private val FAKE_COUNTRIES = listOf(
-        Country("AMD", "Armenian Dram"), Country("Europe", "EUR")
+        Country("AMD", "Armenian Dram"),
+        Country("Europe", "EUR")
     )
 
     @Before
