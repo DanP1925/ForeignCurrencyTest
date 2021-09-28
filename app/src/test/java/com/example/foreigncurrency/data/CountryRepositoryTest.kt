@@ -1,12 +1,8 @@
-package com.example.foreigncurrency.supportedcountries
+package com.example.foreigncurrency.data
 
-import com.example.foreigncurrency.data.Country
-import com.example.foreigncurrency.data.CountryDataSource
-import com.example.foreigncurrency.data.CountryRepository
 import com.google.common.truth.Truth
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
