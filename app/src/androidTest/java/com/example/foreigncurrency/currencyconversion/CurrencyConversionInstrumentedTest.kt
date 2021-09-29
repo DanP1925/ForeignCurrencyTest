@@ -36,10 +36,10 @@ class CurrencyConversionInstrumentedTest {
         //THEN
         onView(
             allOf(
-                withParent(withText("PER")),
+                withParent(withChild(withText("PER"))),
                 withParentIndex(1)
             )
-        ).check(matches(withText("14")))
+        ).check(matches(withText("14.00")))
     }
 
 }

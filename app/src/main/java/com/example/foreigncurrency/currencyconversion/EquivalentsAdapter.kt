@@ -20,7 +20,7 @@ class EquivalentsAdapter(
         fun setupEquivalent(equivalent: CurrencyEquivalent) {
             this.equivalent = equivalent
             currencyTextView.text = equivalent.currencySymbol
-            amountTextView.text = equivalent.equivalentAmount.toString()
+            amountTextView.text = "%.2f".format(equivalent.equivalentAmount)
         }
 
     }
