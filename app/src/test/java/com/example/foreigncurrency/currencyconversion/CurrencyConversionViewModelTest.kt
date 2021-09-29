@@ -1,7 +1,7 @@
 package com.example.foreigncurrency.currencyconversion
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.foreigncurrency.data.Country
+import com.example.foreigncurrency.data.CurrencyExchangeRate
 import com.example.foreigncurrency.getOrAwaitValue
 import com.example.foreigncurrency.observeForTesting
 import com.google.common.truth.Truth.assertThat
@@ -23,15 +23,18 @@ class CurrencyConversionViewModelTest {
     }
 
     private val EQUIVALENTS_SIZE = 2
+    private val FAKE_EXCHANGE_RATES = listOf(
+        CurrencyExchangeRate("USD",1.25),
+        CurrencyExchangeRate("PER",4.0)
+    )
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun getConversions_success() {
+    fun obtainEquivalents_success() {
         //GIVEN
-        val currencyName = "EUR"
+        viewModel.exchangeRates = FAKE_EXCHANGE_RATES
 
         //WHEN
-        viewModel.fetchEquivalents(currencyName)
+        viewModel.obtainEquivalents(3.5)
         viewModel.equivalents.observeForTesting {
             val equivalents = viewModel.equivalents.getOrAwaitValue()
 

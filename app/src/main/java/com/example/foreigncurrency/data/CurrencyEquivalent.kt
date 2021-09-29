@@ -1,3 +1,4 @@
 package com.example.foreigncurrency.data
 
-data class CurrencyEquivalent(val currencySymbol: String, val equivalentAmount: Float)
+data class CurrencyEquivalent(val currencySymbol: String, val equivalentAmount: Double)
+
