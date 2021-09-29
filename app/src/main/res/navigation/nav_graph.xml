@@ -9,6 +9,25 @@
         android:id="@+id/supportedCountries"
         android:name="com.example.foreigncurrency.supportedcountries.SupportedCountriesFragment"
         android:label="@string/supported_countries_label"
-        tools:layout="@layout/fragment_supported_countries" />
+        tools:layout="@layout/fragment_supported_countries">
+
+        <action
+            android:id="@+id/action_supportedCountries_to_currencyConversion"
+            app:destination="@+id/currencyConversion" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/currencyConversion"
+        android:name="com.example.foreigncurrency.currencyconversion.CurrencyConversionFragment"
+        android:label="@string/currency_conversion_label"
+        tools:layout="@layout/fragment_currency_conversion">
+
+        <argument
+            android:name="selectedCurrency"
+            app:argType="string"
+            app:nullable="false" />
+
+    </fragment>
 
 </navigation>

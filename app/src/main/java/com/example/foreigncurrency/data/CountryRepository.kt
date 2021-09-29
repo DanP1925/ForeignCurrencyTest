@@ -2,12 +2,7 @@ package com.example.foreigncurrency.data
 
 import kotlinx.coroutines.flow.Flow
 
-class CountryRepository(
-    private val remoteDataSource: CountryDataSource
-) {
+interface CountryRepository {
 
-    suspend fun getCountries(): Flow<List<Country>> {
-        return remoteDataSource.getCountries()
-    }
-
+    suspend fun fetchCountries(): Flow<List<Country>>
 }

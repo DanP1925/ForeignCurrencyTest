@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.foreigncurrency.data.Country
 import com.example.foreigncurrency.data.CountryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SupportedCountriesViewModel @Inject constructor(
-    private val countryRepository: CountryRepository
+    private val defaultCountryRepository: CountryRepository
 ) : ViewModel() {
 
     private val _countries = MutableLiveData<List<Country>>()
@@ -28,7 +27,7 @@ class SupportedCountriesViewModel @Inject constructor(
     }
 
     suspend fun fetchCountries() {
-        countryRepository.getCountries()
+        defaultCountryRepository.fetchCountries()
             .catch {
 
             }

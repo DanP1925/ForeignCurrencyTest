@@ -2,13 +2,17 @@ package com.example.foreigncurrency.di
 
 import com.example.foreigncurrency.data.CountryDataSource
 import com.example.foreigncurrency.data.CountryRepository
+import com.example.foreigncurrency.data.DefaultCountryRepository
 import com.example.foreigncurrency.data.remote.CountryRemoteDataSource
 import com.example.foreigncurrency.data.remote.CountryService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,6 +46,7 @@ object AppModule {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
+
     @Singleton
     @Provides
     fun provideCountryService(retrofit: Retrofit): CountryService =
@@ -49,13 +54,25 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryRemoteDataSource(countryService: CountryService): CountryDataSource {
+    fun provideCountryRemoteDataSource(countryService: CountryService): CountryRemoteDataSource {
         return CountryRemoteDataSource(countryService)
     }
 
     @Singleton
     @Provides
-    fun provideCountryRepository(remoteDataSource: CountryDataSource): CountryRepository {
-        return CountryRepository(remoteDataSource)
+    fun provideCountryDataSource(remoteDataSource: CountryRemoteDataSource): CountryDataSource {
+        return remoteDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideCountryRepository(countryRepository: DefaultCountryRepository): CountryRepository {
+        return countryRepository
+    }
+
+    @Singleton
+    @Provides
+    fun provideDefaultCountryRepository(remoteDataSource: CountryDataSource): DefaultCountryRepository {
+        return DefaultCountryRepository(remoteDataSource)
     }
 }

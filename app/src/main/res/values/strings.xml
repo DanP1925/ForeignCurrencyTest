@@ -3,5 +3,10 @@
 
     //Navigation Fragments
     <string name="supported_countries_label">Supported Countries</string>
+    <string name="currency_conversion_label">Currency Conversion</string>
+
+    //Fragment Titles
+    <string name="supported_countries_title">Supported Countries</string>
+    <string name="currency_conversion_title">Currency Conversion</string>
 
 </resources>

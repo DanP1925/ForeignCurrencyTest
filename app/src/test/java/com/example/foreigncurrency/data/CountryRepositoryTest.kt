@@ -15,11 +15,11 @@ import org.mockito.Mockito.mock
 class CountryRepositoryTest {
 
     private lateinit var fakeDataSource: CountryDataSource
-    private lateinit var repository: CountryRepository
+    private lateinit var repository: DefaultCountryRepository
 
     private val COUNTRIES_SIZE = 2
     private val FAKE_COUNTRIES = listOf(
-        Country("AMD", "Armenian Dram"),
+        Country("Armenian Dram", "AMD"),
         Country("Europe", "EUR")
     )
 
@@ -30,7 +30,7 @@ class CountryRepositoryTest {
     @Before
     fun setupRepository() {
         fakeDataSource = mock(CountryDataSource::class.java)
-        repository = CountryRepository(fakeDataSource)
+        repository = DefaultCountryRepository(fakeDataSource)
     }
 
     @Test
@@ -41,7 +41,7 @@ class CountryRepositoryTest {
         })
 
         //WHEN
-        val result = repository.getCountries()
+        val result = repository.fetchCountries()
 
         //THEN
         result.collect { countries ->
