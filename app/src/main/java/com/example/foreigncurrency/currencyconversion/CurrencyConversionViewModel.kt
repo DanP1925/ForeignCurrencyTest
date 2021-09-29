@@ -18,7 +18,7 @@ class CurrencyConversionViewModel @Inject constructor(
     private val defaultCountryRepository: CountryRepository
 ) : ViewModel() {
 
-    lateinit var exchangeRates: List<CurrencyExchangeRate>
+    var exchangeRates: List<CurrencyExchangeRate>? = null
 
     private val _equivalents = MutableLiveData<List<CurrencyEquivalent>>()
     val equivalents: LiveData<List<CurrencyEquivalent>> = _equivalents
@@ -35,10 +35,12 @@ class CurrencyConversionViewModel @Inject constructor(
     }
 
     fun obtainEquivalents(amount: Double) {
-        _equivalents.value = exchangeRates.map { exchangeRate ->
-            CurrencyEquivalent(
-                exchangeRate.currencySymbol, exchangeRate.exchangeRate * amount
-            )
+        exchangeRates?.let { exchangeRates ->
+            _equivalents.value = exchangeRates.map { exchangeRate ->
+                CurrencyEquivalent(
+                    exchangeRate.currencySymbol, exchangeRate.exchangeRate * amount
+                )
+            }
         }
     }
 

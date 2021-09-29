@@ -53,7 +53,7 @@ class CurrencyConversionViewModelTest {
 
         //THEN
         assertThat(viewModel.exchangeRates).hasSize(RATES_SIZE)
-        assertThat(viewModel.exchangeRates.get(1).currencySymbol).isEqualTo("PER")
+        assertThat(viewModel.exchangeRates?.get(1)?.currencySymbol).isEqualTo("PER")
     }
 
     @Test

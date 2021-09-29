@@ -11,13 +11,12 @@ import com.example.foreigncurrency.data.Country
 class CountriesAdapter(
     private val countries: List<Country>,
     private val onItemClicked: (String?) -> Unit
-) :
-    RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, val onItemClicked: (String?) -> Unit) :
         RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView = view.findViewById(R.id.tv_country_name)
-        val currencyTextView: TextView = view.findViewById(R.id.tv_country_currency)
+        private val nameTextView: TextView = view.findViewById(R.id.tv_country_name)
+        private val currencyTextView: TextView = view.findViewById(R.id.tv_country_currency)
         var country: Country? = null
 
         init {
