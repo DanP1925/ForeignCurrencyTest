@@ -34,7 +34,7 @@ class CurrencyConversionViewModelTest {
         viewModel = CurrencyConversionViewModel(fakeRepository)
     }
 
-    private val EQUIVALENTS_SIZE = 2
+    private val RATES_SIZE = 2
     private val FAKE_EXCHANGE_RATES = listOf(
         CurrencyExchangeRate("USD", 1.25),
         CurrencyExchangeRate("PER", 4.0)
@@ -52,7 +52,7 @@ class CurrencyConversionViewModelTest {
         viewModel.fetchExchangeRates(SELECTED_CURRENCY)
 
         //THEN
-        assertThat(viewModel.exchangeRates).hasSize(EQUIVALENTS_SIZE)
+        assertThat(viewModel.exchangeRates).hasSize(RATES_SIZE)
         assertThat(viewModel.exchangeRates.get(1).currencySymbol).isEqualTo("PER")
     }
 
@@ -69,7 +69,7 @@ class CurrencyConversionViewModelTest {
             val equivalents = viewModel.equivalents.getOrAwaitValue()
 
             //THEN
-            assertThat(equivalents).hasSize(EQUIVALENTS_SIZE)
+            assertThat(equivalents).hasSize(RATES_SIZE)
             assertThat(equivalents.get(1).equivalentAmount).isEqualTo(CONVERSION_RESULT)
         }
 

@@ -1,6 +1,7 @@
 package com.example.foreigncurrency.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class DefaultCountryRepository @Inject constructor(
@@ -8,11 +9,11 @@ class DefaultCountryRepository @Inject constructor(
 ) : CountryRepository {
 
     override suspend fun fetchCountries(): Flow<List<Country>> {
-        return remoteDataSource.getCountries()
+        return remoteDataSource.fetchCountries()
     }
 
     override suspend fun fetchExchangeRates(currency: String): Flow<List<CurrencyExchangeRate>> {
-        TODO("Not yet implemented")
+        return remoteDataSource.fetchExchangeRates(currency)
     }
 
 }

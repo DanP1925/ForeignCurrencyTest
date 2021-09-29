@@ -23,6 +23,12 @@ class CountryRepositoryTest {
         Country("Europe", "EUR")
     )
 
+    private val RATES_SIZE = 2
+    private val FAKE_EXCHANGE_RATES = listOf(
+        CurrencyExchangeRate("USD", 1.25),
+        CurrencyExchangeRate("PER", 4.0)
+    )
+
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
@@ -34,9 +40,9 @@ class CountryRepositoryTest {
     }
 
     @Test
-    fun getCountries_success() = mainCoroutineRule.runBlockingTest {
+    fun fetchCountries_success() = mainCoroutineRule.runBlockingTest {
         //GIVEN
-        `when`(fakeDataSource.getCountries()).thenReturn(flow {
+        `when`(fakeDataSource.fetchCountries()).thenReturn(flow {
             emit(FAKE_COUNTRIES)
         })
 
@@ -47,6 +53,24 @@ class CountryRepositoryTest {
         result.collect { countries ->
             Truth.assertThat(countries).hasSize(COUNTRIES_SIZE)
             Truth.assertThat(countries[1].currencySymbol).matches("EUR")
+        }
+    }
+
+    @Test
+    fun fetchExchangeRates_success() = mainCoroutineRule.runBlockingTest {
+        //GIVEN
+        val CURRENCY = "EUR"
+        `when`(fakeDataSource.fetchExchangeRates(CURRENCY)).thenReturn(flow {
+            emit(FAKE_EXCHANGE_RATES)
+        })
+
+        //WHEN
+        val result = repository.fetchExchangeRates(CURRENCY)
+
+        //THEN
+        result.collect { exchangeRates ->
+            Truth.assertThat(exchangeRates).hasSize(RATES_SIZE)
+            Truth.assertThat(exchangeRates[1].currencySymbol).matches("PER")
         }
     }
 

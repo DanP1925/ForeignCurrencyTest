@@ -5,6 +5,7 @@ import android.util.Base64.decode
 import com.example.foreigncurrency.BuildConfig
 import com.example.foreigncurrency.data.Country
 import com.example.foreigncurrency.data.CountryDataSource
+import com.example.foreigncurrency.data.CurrencyExchangeRate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ import java.nio.charset.Charset
 
 class CountryRemoteDataSource(private val countryService: CountryService) : CountryDataSource {
     @ExperimentalCoroutinesApi
-    override suspend fun getCountries(): Flow<List<Country>> = flow {
+    override suspend fun fetchCountries(): Flow<List<Country>> = flow {
         val data: ByteArray = decode(BuildConfig.AK, Base64.DEFAULT)
         var param = ""
         try {
@@ -35,4 +36,8 @@ class CountryRemoteDataSource(private val countryService: CountryService) : Coun
             throw RuntimeException()
         }
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun fetchExchangeRates(currency: String): Flow<List<CurrencyExchangeRate>> {
+        TODO("Not yet implemented")
+    }
 }
