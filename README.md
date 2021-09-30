@@ -94,7 +94,10 @@ A list item should look like this
     + Change the provides to binds for methods of the AppModule that return an interface so different classes could be returned depending on the context.
     + Create a class that will handle the different states (success, loading, error) of a base response from an endpoint.
     + Find a way to solve the issue with Moshi trying to parse Map<String, Double>. If a soluton can't be find then find a library to replace it.
+    + Define a naming convention for xml views.
 + Additional Features:
     + Add a database to store the last exchange rates obtained so the app can work without a connection to the internet.
     + Update the exchange rates if the endpoint updates them while the app is running.
     + Add obfuscation so it will be harder to obtain the API key from the source code. Currently it is stored as a base64 format so it has to be decoded beforehand but I don't think this is enough.
+    + Add support for different languages.
+    + Create a view for recent currencies selected. The list of currencies is big and it is difficult to find one specific one so I think it will be easier if the user can have the ones that he is interested at hand.
