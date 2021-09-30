@@ -56,12 +56,45 @@ A list item should look like this
 > BEST OF LUCK 
 
 # Dev Notes
-+ Leave any technical notes on any libraries or tools you chose to use, the more detail the better.
+
++ **Coroutines** : A concurrency design pattern included as part of Kotlin. It is flexible enough because you can declare both the scope and the thread where it is running. Also it uses suspend functions, so it is very explicit which methods can run on the coroutine. I decided to use this because the project was all in Kotlin and it is the recommended way by Google.
++ **Flow** : A flow is a type that can emit multiple values sequentially. It lets you transform the values if needed and handle errors. I decided to use flow because it lets you already handle errors and it works with coroutines.
++ **Dagger Hilt** : A dependency injection library included in Jetpack. I decided to use this because it is the recommended library from Google. In addition, I think it is simpler than Dagger so for this small project where I won't need the more complex features of Dagger it is good enough.
++ **Navigation** : A library that helps with the navigation between activities and fragment. It also is useful to define the parameters needed to go to a new fragment so when someone has to maintain the code, it will be easier for him to know what to pass. To use it, it needs some restructuring of the layouts but because this is a new project that wasn't a problem.
++ **Retrofit** : A HTTP client. It is a robust library that has support for suspending functions so is perfect to work with coroutines. It is very flexible, can be configured and the way to declare requests is very explicit through interfaces.
++ **Moshi** : A library for parsing JSON objects. I decided to use it because of its annotation features where I only had to add them to a class  and then it will know how to handle the parsing. I had an issue when trying to parse Map<String,Double> where the app didn't crash but didn't finish the parse either.
++ **Truth** : A library for performing assertions in tests. I decided to use it because I prefer the failure messages that it displays whenever a test fails.
++ **Arch core** : A library included in Jetpack  needed for testing view models on unit tests.
++ **Mockito** : A library for producing mocks for tests. It is useful because you can verify the interactions with the mocks and even create stubs that can replace classes for tests.
+
 
 ## How to run app & test
-+ Leave instruction on how to run and test your app here
++ How to run the app:
+    + Install the app on the phone
+    + On the first screen select EUR
+    + On the second screen add a number
+    + Go back to the first screen
+    + On the first screen select a different currency
+    + On the second screen press ok on the Error Message
+
++ How to test the app:
+    + Open the app on Android Studio
+    + On the src/test folder do a right click to open other options
+    + Select run Tests in foreignCurrency
+    + On the src/androidTest folder do a right click to open other options
+    + Select run Tests in com.example.foreigncurrency
 
 ## Future Improvement
-+ Code Structuring:
++ Code Structuring: 
+    + Divide the AppModule into separates modules. The new modules could be organized into features.
+    + Create a package SharedTest to put the files that are both used by the integration tests and the unit tests.
+    + Add different product flavors to handle different environments and code that should only run on each one.
 + Refactoring:
+    + Change the component scopes of the provides methods for classes that shouldn't be singletons.
+    + Change the provides to binds for methods of the AppModule that return an interface so different classes could be returned depending on the context.
+    + Create a class that will handle the different states (success, loading, error) of a base response from an endpoint.
+    + Find a way to solve the issue with Moshi trying to parse Map<String, Double>. If a soluton can't be find then find a library to replace it.
 + Additional Features:
+    + Add a database to store the last exchange rates obtained so the app can work without a connection to the internet.
+    + Update the exchange rates if the endpoint updates them while the app is running.
+    + Add obfuscation so it will be harder to obtain the API key from the source code. Currently it is stored as a base64 format so it has to be decoded beforehand but I don't think this is enough.
