@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foreigncurrency.R
 import com.example.foreigncurrency.data.CurrencyEquivalent
-import com.example.foreigncurrency.supportedcountries.CountriesAdapter
+import com.example.foreigncurrency.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class CurrencyConversionFragment : Fragment(R.layout.fragment_currency_conversion) {
@@ -22,11 +23,12 @@ class CurrencyConversionFragment : Fragment(R.layout.fragment_currency_conversio
     private val args: CurrencyConversionFragmentArgs by navArgs()
     private lateinit var selectedCurrency: String
 
-    lateinit var etAmount: EditText
-    lateinit var equivalentsRecyclerView: RecyclerView
+    private lateinit var etAmount: EditText
+    private lateinit var equivalentsRecyclerView: RecyclerView
 
     private val currencyConversionViewModel by viewModels<CurrencyConversionViewModel>()
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         selectedCurrency = args.selectedCurrency
@@ -38,12 +40,19 @@ class CurrencyConversionFragment : Fragment(R.layout.fragment_currency_conversio
 
         equivalentsRecyclerView = view.findViewById(R.id.rv_equivalents)
 
-        currencyConversionViewModel.equivalents.observe(viewLifecycleOwner, Observer(::setupEquivalentsList))
+        currencyConversionViewModel.showErrorEvent.observe(
+            viewLifecycleOwner,
+            EventObserver(::showErrorMessage)
+        )
+        currencyConversionViewModel.equivalents.observe(
+            viewLifecycleOwner,
+            Observer(::setupEquivalentsList)
+        )
 
         currencyConversionViewModel.fetchExchangeRates(selectedCurrency)
     }
 
-    val onTextChanged = object : TextWatcher {
+    private val onTextChanged = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             // Do Nothing
         }
@@ -56,6 +65,15 @@ class CurrencyConversionFragment : Fragment(R.layout.fragment_currency_conversio
         override fun afterTextChanged(p0: Editable?) {
             // Do Nothing
         }
+    }
+
+    private fun showErrorMessage(errorMessage: String?) {
+        ErrorCurrencyConversionDialogFragment(errorMessage) {
+                _, _ -> activity?.onBackPressed()
+        }.show(
+            childFragmentManager,
+            ErrorCurrencyConversionDialogFragment.TAG
+        )
     }
 
     fun setupEquivalentsList(equivalents: List<CurrencyEquivalent>) {

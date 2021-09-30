@@ -47,23 +47,22 @@ class CountryRemoteDataSource(private val countryService: CountryService) : Coun
             // There is an issue with Moshi AND Map<String, Double> and that is why I'm returning a ResponseBody
             val responseBody: ResponseBody = countryService.fetchLatestRates(decodeAK(), currency)
             val latestRatesResponseJSON = JSONObject(responseBody.string())
-            val symbols = HashMap<String, Double>()
-            val ratesJSON = latestRatesResponseJSON.getJSONObject("rates")
-            for (key in ratesJSON.keys()) {
-                symbols[key] = ratesJSON.getDouble(key)
-            }
-            val response = LatestRatesResponse(
-                latestRatesResponseJSON.getBoolean("success"),
-                symbols
-            )
+            val hasSucceeded = latestRatesResponseJSON.getBoolean("success")
 
-            if (response.success) {
+            if (hasSucceeded) {
+                val symbols = HashMap<String, Double>()
+                val ratesJSON = latestRatesResponseJSON.getJSONObject("rates")
+                for (key in ratesJSON.keys()) {
+                    symbols[key] = ratesJSON.getDouble(key)
+                }
+                val response = LatestRatesResponse(hasSucceeded, symbols)
                 val rates = response.symbols.map { (key, value) ->
                     CurrencyExchangeRate(key, value)
                 }
                 emit(rates)
             } else {
-                throw RuntimeException()
+                val errorJSON = latestRatesResponseJSON.getJSONObject("error")
+                throw RuntimeException(errorJSON.getString("type"))
             }
         }.flowOn(Dispatchers.IO)
 }

@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.foreigncurrency.R
 
 class ErrorSupportedCountriesDialogFragment : DialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
             .setMessage(getString(R.string.supported_countries_error_message))
