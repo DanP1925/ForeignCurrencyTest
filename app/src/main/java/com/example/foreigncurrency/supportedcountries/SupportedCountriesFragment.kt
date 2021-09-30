@@ -2,6 +2,9 @@ package com.example.foreigncurrency.supportedcountries
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countries) {
 
     lateinit var countriesRecyclerView: RecyclerView
+    lateinit var loading: ProgressBar
 
     private val supportedCountriesViewModel by viewModels<SupportedCountriesViewModel>()
 
@@ -23,11 +27,15 @@ class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countrie
 
         activity?.title = getString(R.string.supported_countries_title)
 
+        loading = view.findViewById(R.id.loading_countries)
         countriesRecyclerView = view.findViewById(R.id.rv_countries)
 
-        supportedCountriesViewModel.countries.observe(viewLifecycleOwner, { countries ->
-            setupCountriesList(countries)
-        })
+        supportedCountriesViewModel.loading.observe(viewLifecycleOwner, ::setupLoading)
+        supportedCountriesViewModel.countries.observe(viewLifecycleOwner, ::setupCountriesList)
+    }
+
+    private fun setupLoading(isLoading: Boolean){
+        loading.visibility = if (isLoading) VISIBLE else GONE
     }
 
     private fun setupCountriesList(countries: List<Country>) {
@@ -35,13 +43,15 @@ class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countrie
         countriesRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun goToCurrencyConversion(country :String?) {
-        if (country.isNullOrEmpty()){
+    private fun goToCurrencyConversion(country: String?) {
+        if (country.isNullOrEmpty()) {
             return
         }
 
         findNavController().navigate(
-            SupportedCountriesFragmentDirections.actionSupportedCountriesToCurrencyConversion(country)
+            SupportedCountriesFragmentDirections.actionSupportedCountriesToCurrencyConversion(
+                country
+            )
         )
     }
 

@@ -21,8 +21,12 @@ class SupportedCountriesViewModel @Inject constructor(
     private val _countries = MutableLiveData<List<Country>>()
     val countries: LiveData<List<Country>> = _countries
 
+    private val _loading = MutableLiveData<Boolean>(false)
+    val loading: LiveData<Boolean> = _loading
+
     init {
         viewModelScope.launch {
+            _loading.value = true
             fetchCountries()
         }
     }
@@ -33,6 +37,7 @@ class SupportedCountriesViewModel @Inject constructor(
 
             }
             .collect { countries ->
+                _loading.value = false
                 _countries.value = countries
             }
     }
