@@ -6,6 +6,7 @@ import com.example.foreigncurrency.data.CurrencyExchangeRate
 import com.example.foreigncurrency.data.DefaultCountryRepository
 import com.example.foreigncurrency.getOrAwaitValue
 import com.example.foreigncurrency.observeForTesting
+import com.example.foreigncurrency.util.Event
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -15,6 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import java.lang.RuntimeException
 
 class CurrencyConversionViewModelTest {
 
@@ -54,6 +56,27 @@ class CurrencyConversionViewModelTest {
         //THEN
         assertThat(viewModel.exchangeRates).hasSize(RATES_SIZE)
         assertThat(viewModel.exchangeRates?.get(1)?.currencySymbol).isEqualTo("PER")
+    }
+
+    @Test
+    fun fetchExchangeRates_failure() = mainCoroutineRule.runBlockingTest {
+        //GIVEN
+        val SELECTED_CURRENCY = "EUR"
+        val ERROR_MESSAGE = "base_currency_access_restricted"
+        `when`(fakeRepository.fetchExchangeRates(SELECTED_CURRENCY)).thenReturn(flow {
+            throw RuntimeException(ERROR_MESSAGE)
+        })
+
+        //WHEN
+        viewModel.fetchExchangeRates(SELECTED_CURRENCY)
+
+        //THEN
+        viewModel.showErrorEvent.observeForTesting {
+            val event = viewModel.showErrorEvent.getOrAwaitValue()
+
+            //THEN
+            assertThat(event.peekContent()).matches(ERROR_MESSAGE)
+        }
     }
 
     @Test
