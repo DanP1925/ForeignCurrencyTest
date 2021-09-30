@@ -6,6 +6,7 @@ import com.example.foreigncurrency.data.Country
 import com.example.foreigncurrency.data.DefaultCountryRepository
 import com.example.foreigncurrency.getOrAwaitValue
 import com.example.foreigncurrency.observeForTesting
+import com.example.foreigncurrency.util.Event
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -15,6 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import java.lang.RuntimeException
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -61,6 +63,24 @@ class SupportedCountriesViewModelTest {
             //THEN
             assertThat(countries).hasSize(COUNTRIES_SIZE)
             assertThat(countries.get(1).currencySymbol).matches("EUR")
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun getCountries_failure() = mainCoroutineRule.runBlockingTest {
+        //GIVEN
+        `when`(fakeRepository.fetchCountries()).thenReturn(flow {
+            throw RuntimeException()
+        })
+
+        //WHEN
+        viewModel.fetchCountries()
+        viewModel.showErrorEvent.observeForTesting {
+            viewModel.showErrorEvent.getOrAwaitValue()
+
+            //THEN
+            assertThat(viewModel.showErrorEvent.value is Event<Unit>).isTrue()
         }
     }
 

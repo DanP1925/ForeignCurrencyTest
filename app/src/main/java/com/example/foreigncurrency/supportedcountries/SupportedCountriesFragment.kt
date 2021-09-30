@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foreigncurrency.R
 import com.example.foreigncurrency.data.Country
+import com.example.foreigncurrency.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countries) {
 
-    lateinit var countriesRecyclerView: RecyclerView
-    lateinit var loading: ProgressBar
+    private lateinit var countriesRecyclerView: RecyclerView
+    private lateinit var loading: ProgressBar
 
     private val supportedCountriesViewModel by viewModels<SupportedCountriesViewModel>()
 
@@ -31,11 +32,22 @@ class SupportedCountriesFragment : Fragment(R.layout.fragment_supported_countrie
         countriesRecyclerView = view.findViewById(R.id.rv_countries)
 
         supportedCountriesViewModel.loading.observe(viewLifecycleOwner, ::setupLoading)
+        supportedCountriesViewModel.showErrorEvent.observe(
+            viewLifecycleOwner,
+            EventObserver { showErrorMessage() }
+        )
         supportedCountriesViewModel.countries.observe(viewLifecycleOwner, ::setupCountriesList)
     }
 
-    private fun setupLoading(isLoading: Boolean){
+    private fun setupLoading(isLoading: Boolean) {
         loading.visibility = if (isLoading) VISIBLE else GONE
+    }
+
+    private fun showErrorMessage() {
+        ErrorSupportedCountriesDialogFragment().show(
+            childFragmentManager,
+            ErrorSupportedCountriesDialogFragment.TAG
+        )
     }
 
     private fun setupCountriesList(countries: List<Country>) {

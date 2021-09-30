@@ -1,4 +1,4 @@
-package com.example.foreigncurrency
+package com.example.foreigncurrency.util
 
 import android.app.Application
 import android.content.Context

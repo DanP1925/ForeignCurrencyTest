@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
 class CountryRemoteDataSource(private val countryService: CountryService) : CountryDataSource {
-    fun decodeAK(): String {
+    private fun decodeAK(): String {
         val data: ByteArray = decode(BuildConfig.AK, Base64.DEFAULT)
         var param = ""
         try {

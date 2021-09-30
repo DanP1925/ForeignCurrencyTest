@@ -9,6 +9,10 @@
     <string name="supported_countries_title">Supported Countries</string>
     <string name="currency_conversion_title">Currency Conversion</string>
 
+    //Supported Countries String
+    <string name="supported_countries_error_message">There was an issue while loading the information, please try later</string>
+    <string name="supported_countries_positive_button">Ok</string>
+
     //Currency Conversion Strings
     <string name="currency_conversion_amount_hint">Enter amount</string>
 
